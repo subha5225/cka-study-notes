@@ -1,0 +1,85 @@
+1. Creating a Cluster
+  - User kubeamd to create a cluster. control.example.com is set as up as control node and worker{1..3} 
+    are set up as nodes.
+  - The task is complete if "kubectl get nodes" shows all nodes in "ready" state.
+
+2. Creating a Pod
+  - Create a pod named "elephent" that runs the latest version of redis image.
+    The pod CPU Request set to 1 cpu and Memory Request set to 200 MiB, and it should be created
+    in the "mynamespace" namespace. Make sure the pod is automatically restarted if it fails.
+  - Create a pod named "super-user-pod" that runs the busybox image with version 1.28.
+    Allow the pod to be able to set system_time.
+    This pod should be configured to sleep 3600 seconds.
+
+3. Creating a Pod with an init container
+  - Configure a pod that runs 2 containers.
+  - The first container should create the file /data/runfile.txt.
+  - The second container should only start once this file has been created.
+  - The second container should run the "sleep 10000" command as its task.
+
+4. Configure storage
+  - Create Persistent Volume wuth name "pv-1" that uses local host storage with 1Gi storage and ReadWriteOnce access mode.
+  - This PV should be accessible from all namespaces.
+  - Create Persistent Volume Clain with name "my-pvc".
+  - Run a pod with the name "pv-pod" that uses this PV from the "myvol" namespace, volume should be mounted on /data path.
+
+5. Running a Pod once
+  - In the "run-once" namespace, run a pod with a name "xxazz-pod", using the alpine image and the command "sleep 3600".
+  - Create the namespace if needed.
+  - Ensure that the task in the pod runs once, and after running it once, the pod stops.
+
+6. Managing Updates
+  - Create a Deployment called "nginx-deploy" that runs 1 replica of Nginx, based on the version 1.14.
+  - After creating it upgrade to the latest version of Nginx using rolling upgrade,
+    make sure the version upgrade is recorded in the resource annotation.
+  - After successfully performing the upgrade, undo the upgrade again.
+
+7. Using Labels
+  - Find all Kubernetes objects in all namespaces that have the label "k8s-app" set to the value "kube-dns".
+
+8. Using ConfigMaps
+  - Create a ConfigMap that defines the variable "myuser=mypassword".
+  - Create pod that runs alpine, and uses this variable from the ConfigMap .
+
+9. Running parallel Pods
+  - Create a solution that runs multiple pods in parallel.
+  - The solution should storage Nginx, and ensure that it's started on every node in the cluster in the way that
+    if a new node as added, Nginx pod automatically added to that node as well.
+
+10. Marking a node as unavailable
+  - Mark node worker3 as unavailable. Ensure that all pods are moved away from the local node and started again
+    somewhere else.
+  - After successfully executing this task, make sure worker3 can be used again.
+
+11. Using Maintenance Mode
+  - Put node worker2 in maintenance mode, such that no new pods will be scheduled on it.
+  - After successfully executing this task, undo it.
+
+12. Backing up the Etcd Database
+  - Create a backup of the Etcd database. API version 3 is used for the current database.
+  - Write the backup to /var/exam/etcd-backup.
+
+13. Using DNS
+  - Start a pod that runs busybox image. Use name "busybox33" for this pod.
+  - Expose this pod on ClusterIP address.
+  - Configure the pod and service such that DNS name resolution is possible, and use any utility to lookup
+    the name of both.
+  - Write the output of the DNS lookup to the file /var/exam/dnsnames.txt.
+
+14. Configure a Node to autostart a Pod
+  - Configure your node worker3 to automatically start a pod that runs Nginx webserver, using the name "auto-web".
+    Put the manifest file in /etc/kubernetes/manifests.
+
+15. Finding the Pod with the highest CPU load
+  - Find the pod with the highest CPU load and write its name to the file /var/exam/cpu-pods.txt.
+
+16. Create user
+  - Create user "john". Grant him access too the cluster.
+  - John should have permissions to create, get, update and delete pods in the "development" namespace.
+  - Private key john.key and CSR john.csr reside in /root directory.
+
+17. Create Service Account
+  - Create new Service Account with the name "pvviewer".
+  - Grant this Service Account access to list all PersistentVolumes in the cluster by creating appropriate cluster
+    role called "pvviewer-role" and ClusterRoleBinding called "pvviewer-role-binding".
+  - Create pod called pvviewer with the redis image and ServiceAccount pvviewer in the default namespace.
