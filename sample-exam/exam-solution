@@ -1,0 +1,158 @@
+0.  Set environment
+  https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+
+2.  Creating a Pod
+- kubectl creaet ns mynamespace
+
+  https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/
+  https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+  https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: elephent
+  namespace: mynamespace
+spec:
+  restartPolicy: OnFailure
+  containers:
+  - name: redis
+    image: redis
+    resources:
+      requests:
+        memory: "200Mi"
+        cpu: "1000m"
+- https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+  https://kubernetes.io/docs/concepts/workloads/pods/
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: super-user-pod
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.28
+    command: ['sh', '-c', 'sleep 3600']
+    securityContext:
+      capabilities:
+        add: ["SYSTEM_TIME"]
+
+3.  Creating a Pod with an init container
+- https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: myapp-container
+    image: busybox:1.28
+    command: ['sh', '-c', 'sleep 10000']
+  initContainers:
+  - name: init-myservice
+    image: busybox:1.28
+    command: ['sh', '-c', "mkdir /data && touch /data/runfile.txt"]
+
+4. Configure storage
+- https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/#create-a-persistentvolume
+  https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-1
+spec:
+  capacity:
+    storage: 3Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc
+  namespace: myvol
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+
+  kubectl create ns myvol
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pv-pod
+  namespace: myvol
+spec:
+  volumes:
+    - name: task-pv-storage
+      persistentVolumeClaim:
+        claimName: my-pvc
+  containers:
+    - name: task-pv-container
+      image: busybox
+      volumeMounts:
+        - mountPath: "/data"
+          name: task-pv-storage
+
+5. Running a Pod once
+-   https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
+
+kubectl create ns "run-once"
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: xxazz-pod
+  namespace: run-once
+spec:
+  restartPolicy: Never
+  containers:
+  - name: alpine
+    image: alpine
+    command: ['sh', '-c', 'sleep 3600']
+
+6. Managing Updates
+- https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+  https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+
+  kubectl create deployment nginx-deploy --image nginx:1.14 --replicas 1 --dry-run -o yaml > nginx-deploy.yaml
+  kubectl create -f nginx-deploy.yaml
+  kubectl set image deployment/nginx-deploy --image nginx --record
+  kubectl kubectl rollout history deployment/nginx-deploy
+  kubectl rollout undo deployment/nginx-deploy
+
+7. Using Labels
+- kubectl get all -A --selector k8s-app=kube-dns
+
+8. Using ConfigMaps
+- https://kubernetes.io/docs/concepts/configuration/configmap/
+
+  kubectl create configmap test-cm --from-literal myuser=mypassword
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: configmap-pod
+spec:
+  containers:
+    - name: alpine
+      image: alpine
+      env:
+        - valueFrom:
+            configMapKeyRef:
+              name: test-cm
+              key: myuser
+  volumes:
+    - name: config
+      configMap:
+        name: test-cm

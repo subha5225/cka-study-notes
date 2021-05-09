@@ -18,9 +18,9 @@
   - The second container should run the "sleep 10000" command as its task.
 
 4. Configure storage
-  - Create Persistent Volume wuth name "pv-1" that uses local host storage with 1Gi storage and ReadWriteOnce access mode.
+  - Create Persistent Volume wuth name "pv-1" that uses local host storage with 3Gi storage and ReadWriteOnce access mode.
   - This PV should be accessible from all namespaces.
-  - Create Persistent Volume Clain with name "my-pvc".
+  - Create Persistent Volume Clain with name "my-pvc" with 1Gi storage claim in namespace "myvol".
   - Run a pod with the name "pv-pod" that uses this PV from the "myvol" namespace, volume should be mounted on /data path.
 
 5. Running a Pod once
@@ -38,7 +38,7 @@
   - Find all Kubernetes objects in all namespaces that have the label "k8s-app" set to the value "kube-dns".
 
 8. Using ConfigMaps
-  - Create a ConfigMap that defines the variable "myuser=mypassword".
+  - Create a ConfigMap with name "test-cm" that defines the variable "myuser=mypassword".
   - Create pod that runs alpine, and uses this variable from the ConfigMap .
 
 9. Running parallel Pods
