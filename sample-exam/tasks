@@ -39,7 +39,7 @@
 
 8. Using ConfigMaps
   - Create a ConfigMap with name "test-cm" that defines the variable "myuser=mypassword".
-  - Create pod that runs alpine, and uses this variable from the ConfigMap .
+  - Create pod that runs alpine, and uses this variable from the ConfigMap.
 
 9. Running parallel Pods
   - Create a solution that runs multiple pods in parallel.
@@ -73,13 +73,23 @@
 15. Finding the Pod with the highest CPU load
   - Find the pod with the highest CPU load and write its name to the file /var/exam/cpu-pods.txt.
 
-16. Create user
-  - Create user "john". Grant him access too the cluster.
+16. Create NetworkPolicy
+  - Run Nginx pod in the "default" namespace. Also run busybox pod in the "secure" namespace.
+  - Create NetworkPolicy that only allows access to the nginx pod from the busybox pod in the secure
+    namespace and denies all other access.
+
+17. Configure a HA Cluster
+  - Create a 5 node HA cluster, using 3 controller nodes and 2 worker nodes.
+
+18. Create user
+  - Create user "john". Grant him access to the cluster.
   - John should have permissions to create, get, update and delete pods in the "development" namespace.
   - Private key john.key and CSR john.csr reside in /root directory.
 
-17. Create Service Account
+19. Create Service Account
   - Create new Service Account with the name "pvviewer".
   - Grant this Service Account access to list all PersistentVolumes in the cluster by creating appropriate cluster
     role called "pvviewer-role" and ClusterRoleBinding called "pvviewer-role-binding".
   - Create pod called pvviewer with the redis image and ServiceAccount pvviewer in the default namespace.
+
+20. 
