@@ -92,4 +92,18 @@
     role called "pvviewer-role" and ClusterRoleBinding called "pvviewer-role-binding".
   - Create pod called pvviewer with the redis image and ServiceAccount pvviewer in the default namespace.
 
-20. 
+20. Cluster managment
+  - List the internalIP of all nodes in the cluster. Save the result in the file /root/nodes_ips.
+  - Answer should be in from of:
+
+  internalIP of master <space> internalIP of node1 <space> internalIP of node2 .....
+
+21. Create multi-container pod
+  - Create a pod called multi-pod with two containers.
+    containet 1 named alfa, image nginx
+    container 2 named beta, image busybox, command sleep 4800
+  - Set Environment variable on each container
+    container 1 value=alfa
+    container 2 value=beta
+
+22. 
