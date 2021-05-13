@@ -8,7 +8,7 @@
     The pod CPU Request set to 1 cpu and Memory Request set to 200 MiB, and it should be created
     in the "mynamespace" namespace. Make sure the pod is automatically restarted if it fails.
   - Create a pod named "super-user-pod" that runs the busybox image with version 1.28.
-    Allow the pod to be able to set system_time.
+    Allow the pod to be able to set sys_time.
     This pod should be configured to sleep 3600 seconds.
 
 3. Creating a Pod with an init container
@@ -43,7 +43,7 @@
 
 9. Running parallel Pods
   - Create a solution that runs multiple pods in parallel.
-  - The solution should storage Nginx, and ensure that it's started on every node in the cluster in the way that
+  - The solution should start Nginx, and ensure that it's started on every node in the cluster in the way that
     if a new node as added, Nginx pod automatically added to that node as well.
 
 10. Marking a node as unavailable
