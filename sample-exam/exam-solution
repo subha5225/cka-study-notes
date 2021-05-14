@@ -256,3 +256,38 @@ spec:
 - https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/
 
 18. Create user
+- https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/
+  https://kubernetes.io/docs/reference/access-authn-authz/rbac/
+
+19. Create Service Account
+- https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+
+kubectl create serviceaccount pvviewer
+kubectl create clusterrole pvviewer-role --resource=persistentvolumes --verb=list
+kubectl create clusterrolebinding pvviewer-role-binding --serviceaccount=default:pvviewer --clusterrole=pvviewer-role
+
+20. Cluster managment
+- https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+
+kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}' > /root/nodes_ips
+
+21. Create multi-container pod
+- https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
+
+kind: Pod
+apiVersion: v1
+metadata:
+  name: multi-pod
+spec:
+  containers:
+  - name: alfa
+    image: nginx
+    env:
+    - name: value
+      value: alfa
+  - name: beta
+    image: busybox
+    command: ['sh', '-c', 'sleep 4800']
+    env:
+    - name: value
+      value: beta
