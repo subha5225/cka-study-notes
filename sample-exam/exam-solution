@@ -291,3 +291,10 @@ spec:
     env:
     - name: value
       value: beta
+
+
+      https://kubernetes.io/docs/concepts/services-networking/ingress/
+      https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
+      https://kubernetes.io/docs/concepts/storage/storage-classes/#local
+      https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/
+      https://kubernetes.io/docs/concepts/configuration/secret/
